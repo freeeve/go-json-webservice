@@ -3,15 +3,17 @@ package main
 import (
 	"net/http"
 	"testing"
+   "time"
+   "io/ioutil"
 )
 
 func TestBaseHandler(t *testing.T) {
 	go main()
-	time.sleep(100 * time.Millisecond)
+	time.Sleep(100 * time.Millisecond)
 
-	resp, err := http.Get("http://localhost:4321/")
-	body := ioutil.ReadAll(resp)
-	if body != "{\"message\":\"hello world\"}" {
+	resp, _ := http.Get("http://localhost:4321/")
+	body, _ := ioutil.ReadAll(resp.Body)
+	if string(body) != "{\"message\":\"hello world\"}" {
 		t.Error("TestBaseHandler doesn't match:", body)
 	}
 }
