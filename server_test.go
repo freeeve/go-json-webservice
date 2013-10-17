@@ -33,7 +33,7 @@ func TestUserCreateHandler(t *testing.T) {
 	resp, _ := client.Post("https://localhost:4321/user-create", "application/json",
 		bytes.NewReader([]byte("{\"email\":\"wes@skeweredrook.com\"}")))
 	body, _ := ioutil.ReadAll(resp.Body)
-	if string(body) != "{\"message\":\"success\"}" {
-		t.Error("TestUserCreateHandler doesn't match:", body)
+	if string(body) != `{"message":"success"}` {
+		t.Error("TestUserCreateHandler doesn't match:", string(body))
 	}
 }

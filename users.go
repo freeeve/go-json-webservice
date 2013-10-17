@@ -2,17 +2,15 @@ package main
 
 import (
 	"code.google.com/p/go.crypto/bcrypt"
-	"crypto/rand"
-	"io"
 	"labix.org/v2/mgo"
+	"labix.org/v2/mgo/bson"
 	"log"
 )
 
 type User struct {
-	Email       string `bson:"email"`
-	Passhash    []byte `bson:"passhash"`
-	Confirmed   bool   `bson:"confirmed"`
-	ConfirmHash string `bson:"confirmHash"`
+	Email    string `bson:"email"`
+	Passhash []byte `bson:"passhash"`
+	Confirm  string `bson:"confirm"`
 }
 
 func CreateUser(ucr UserCreateRequest) error {
@@ -24,14 +22,15 @@ func CreateUser(ucr UserCreateRequest) error {
 
 	users := session.DB("webapp").C("users")
 	passhash, _ := bcrypt.GenerateFromPassword([]byte(ucr.Password), 10)
-	len := 32
-	hash := make([]byte, len)
-	io.ReadFull(rand.Reader, hash)
 	user := User{Email: ucr.Email,
-		Passhash:    passhash,
-		Confirmed:   false,
-		ConfirmHash: string(hash),
+		Passhash: passhash,
+		Confirm:  bson.NewObjectId().Hex(),
 	}
 	users.Insert(user)
+	SendEmail(user.Email)
 	return nil
+}
+
+func SendEmail(email string) {
+
 }
