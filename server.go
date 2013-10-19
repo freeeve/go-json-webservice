@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"github.com/daaku/go.httpgzip"
-	"io/ioutil"
 	"net/http"
 )
 
@@ -18,9 +17,8 @@ func baseHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func userCreateHandler(w http.ResponseWriter, req *http.Request) {
-	body, _ := ioutil.ReadAll(req.Body)
 	ucr := UserCreateRequest{}
-	json.Unmarshal(body, &ucr)
+	json.NewDecoder(req.Body).Decode(&ucr)
 	CreateUser(ucr)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte("{\"message\":\"success\"}"))
