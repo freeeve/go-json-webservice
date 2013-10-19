@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/daaku/go.httpgzip"
 	"io/ioutil"
 	"net/http"
 )
@@ -30,5 +31,5 @@ func main() {
 	servemux.HandleFunc("/", baseHandler)
 	servemux.HandleFunc("/user-create", userCreateHandler)
 
-	http.ListenAndServeTLS("localhost:4321", "cert.pem", "key.pem", servemux)
+	http.ListenAndServeTLS("localhost:4321", "cert.pem", "key.pem", httpgzip.NewHandler(servemux))
 }
