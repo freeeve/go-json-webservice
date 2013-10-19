@@ -11,7 +11,6 @@ import (
 
 func TestBaseHandler(t *testing.T) {
 	go main()
-
 	time.Sleep(200 * time.Millisecond)
 
 	tr := &http.Transport{
@@ -20,8 +19,8 @@ func TestBaseHandler(t *testing.T) {
 	client := &http.Client{Transport: tr}
 	resp, _ := client.Get("https://localhost:4321/")
 	body, _ := ioutil.ReadAll(resp.Body)
-	if string(body) != "{\"message\":\"hello world\"}" {
-		t.Error("TestBaseHandler doesn't match:", body)
+	if string(body) != `{"message":"hello world"}` {
+		t.Error("TestBaseHandler doesn't match:", string(body))
 	}
 }
 
