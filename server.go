@@ -1,14 +1,14 @@
 package main
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"net/http"
-   "io/ioutil"
-   "encoding/json"
 )
 
 type UserCreateRequest struct {
-   Email string `json:"email"`
-   Password string `json:"password"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 func baseHandler(w http.ResponseWriter, req *http.Request) {
@@ -17,10 +17,10 @@ func baseHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func userCreateHandler(w http.ResponseWriter, req *http.Request) {
-   body, _ := ioutil.ReadAll(req.Body)
-   ucr := UserCreateRequest{}
-   json.Unmarshal(body, &ucr)
-   CreateUser(ucr)
+	body, _ := ioutil.ReadAll(req.Body)
+	ucr := UserCreateRequest{}
+	json.Unmarshal(body, &ucr)
+	CreateUser(ucr)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte("{\"message\":\"success\"}"))
 }

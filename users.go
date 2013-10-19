@@ -32,5 +32,5 @@ func CreateUser(ucr UserCreateRequest) error {
 }
 
 func SendEmail(email string) {
-   // TODO 
+	// TODO
 }
